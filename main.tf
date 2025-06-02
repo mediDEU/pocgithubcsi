@@ -14,7 +14,7 @@ terraform {
     resource_group_name  = "tfstate-gademo-rg"
     storage_account_name = "tfstategademo"
     container_name       = "tfstate"
-    key                  = "tfdemo.ga.tfstate"
+    key                  = "HHsMhmmgNr9pmzPGEtgSVxGSxQy+7twLq025Yx4e5msmFFdTtECv4oxiKTwOV2zZljvPlNN+tdgS+AStYS5zHw=="
   }
 }
 provider "azurerm" {
