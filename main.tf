@@ -8,8 +8,8 @@ terraform {
   backend "azurerm" {
       resource_group_name  = "tfstate-gademo-rg"
       storage_account_name = "tfstategademo"
-      container_name       = "tfstate"
-      key                  = "tfstategademo.tfstate"
+      container_name       = "tfstate1"
+      key                  = "tfstategademo.tfstate1"
   }
 
 }
