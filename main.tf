@@ -23,7 +23,7 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "example" {
-  location = var.resource_group_location
-  name     = random_pet.rg_name.id
+  location = "West Europe"
+  name     = "testmedirg"
 }
 
