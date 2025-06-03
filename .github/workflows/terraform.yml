@@ -24,5 +24,5 @@ jobs:
       with:
         azPSVersion: latest
         inlineScript: |
-          Get-AzResourceGroup -Name "<YOUR RESOURCE GROUP>"
+          Get-AzResourceGroup -Name "githubpoc"
           # You can write your Azure PowerShell inline scripts here.
