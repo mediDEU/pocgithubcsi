@@ -1,26 +1,25 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "~>3.0"
-    }
-  }
-  backend "azurerm" {
-      resource_group_name  = "tfstate-gademo-rg"
-      storage_account_name = "tfstategademo"
-      container_name       = "tfstate1"
-      key                  = "tfstategademo.tfstate1"
-  }
-
-}
-
-provider "azurerm" {
-  features {}
-  subscription_id = "13e3a757-2746-4a8a-8f2f-e6f3919648e7"
-}
-
-resource "azurerm_resource_group" "example" {
+# Create a Resource Group if it doesn’t exist
+resource "azurerm_resource_group" "tfexample" {
+  name     = "my-terraform-rg"
   location = "West Europe"
-  name     = "testmedirg"
 }
 
+# Create a Storage account
+resource "azurerm_storage_account" "terraform_state" {
+  name                     = var.storage_account_name
+  resource_group_name      = azurerm_resource_group.tfexample.name
+  location                 = azurerm_resource_group.tfexample.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+
+  tags = {
+    environment = "my-terraform-env"
+  }
+}
+
+# Create a Storage container
+resource "azurerm_storage_container" "terraform_state" {
+  name                  = var.container_name
+  storage_account_name  = azurerm_storage_account.terraform_state.name
+  container_access_type = "private"
+}
