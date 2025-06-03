@@ -1,15 +1,13 @@
-provider "azurerm" {
-  features = {}
-}
-
-# Set the Azure Provider source and version being used
 terraform {
-  required_version = ">= 0.14"
-
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.1.0"
+      version = "~>4.0"
     }
   }
+}
+
+provider "azurerm" {
+  features {}
+subscription_id= "13e3a757-2746-4a8a-8f2f-e6f3919648e7"
 }
