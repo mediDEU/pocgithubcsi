@@ -1,7 +1,7 @@
 terraform {
   backend "azurerm" {
     resource_group_name  = "githubpoc"
-    storage_account_name = "githubpoc"
+    storage_account_name = "stcstatefiletf"
     container_name       = "statetf"
     key                  = "terraform.tfstate"
     tenant_id            = "4884a63b-a3ca-48b0-a43a-bc817d8a2660"
