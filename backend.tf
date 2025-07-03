@@ -1,10 +1,11 @@
 terraform {
+  required_version = ">= 1.0"
   backend "azurerm" {
     resource_group_name  = "githubpoc"
-    storage_account_name = "stcstatefiletf"
-    container_name       = "statetf"
-    key                  = "terraform.tfstate"
-    tenant_id            = "4884a63b-a3ca-48b0-a43a-bc817d8a2660"
-    subscription_id      = "13e3a757-2746-4a8a-8f2f-e6f3919648e7"
+    storage_account_name = "stcstatefiletfpoc"
+    container_name       = "tfstate"
+    key                  = "tf.tfstate"
+    tenant_id            = "023a7871-db5b-45bd-b776-88e3cd7e0b2c"
+    subscription_id      = "b307668a-47b5-4933-b51f-316827f474fa"
     }
 }
