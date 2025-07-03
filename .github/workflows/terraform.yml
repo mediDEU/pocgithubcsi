@@ -1,11 +1,78 @@
-name: CI
-
-on: [push, pull_request]
+name: Run Azure Login with the Service Principal secret
+on: [push]
 
 jobs:
-  build:
+  azurelogin:
     runs-on: self-hosted
     steps:
-    - uses: actions/checkout@v2
-    - name: Run a one-line script
-      run: echo "Hello, world!"
+    - name: Azure Login action
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+    
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    #validate terraform   
+    - name: Validate Terraform configuration
+      uses: devops-infra/action-terraform-validate@v0.3.1
+
+    # uses tfsec  
+    - name: tfsec action
+      uses: aquasecurity/tfsec-action@v1.0.3
+      with:
+        working_directory: .
+        version: v1.0.3
+        format: default
+        github_token:  ${{ secrets.GITHUB_TOKEN }}
+
+   #uses tflint
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v4
+      with:
+       tflint_version: v0.52.0
+    
+    - name: Show version
+      run: tflint --version
+
+    - name: Init TFLint
+      run: tflint --init
+      env:
+       GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Run TFLint
+      run: tflint -f compact
+      
+    - name: Run Checkov
+      uses: bridgecrewio/checkov-action@v12
+      with:
+          directory: .
+          framework: terraform
+          output_format: github_failed_only
+          output_file_path: ./terraform
+          quiet: true
+          soft_fail: true
+
+    
+
+    # Install the latest version of Terraform CLI 
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+   #formats your Terraform configuration files to a canonical style, ensuring readability and consistency
+    - name: Terraform Format
+      run: terraform fmt
+   #linting terraform 
+    - name: Terraform lint
+      run: tflint 
+   
+  # Generates an execution plan for Terraform
+    - name: Terraform Plan
+      run: terraform plan -input=false
+  # On push to "master", build or change infrastructure according to Terraform configuration files
+    - name: Terraform Apply
+      run: terraform apply -auto-approve
