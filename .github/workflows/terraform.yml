@@ -28,11 +28,7 @@ jobs:
 
           echo "::set-output name=h::$h"
 
-      - name: Checkout code
-        uses: actions/checkout@v3
       - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+        uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 1.0.0 # specify your desired version
-      - name: Initialize Terraform
-        run: terraform init
+         terraform_version: 1.12
