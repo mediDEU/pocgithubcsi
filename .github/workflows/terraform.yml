@@ -42,9 +42,10 @@ jobs:
           terraform_version: 1.8.5
 
       - name: Terraform Init
-        id: init
         run: terraform init
 
       - name: Terraform Plan
-        id: plan
-        run: terraform plan -out tfplan
+        run: terraform plan -input=false
+  # On push to "master", build or change infrastructure according to Terraform configuration files
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
