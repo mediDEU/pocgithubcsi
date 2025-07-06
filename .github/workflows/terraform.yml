@@ -1,24 +1,25 @@
-# File: .github/workflows/workflow.yml
+name: Azure Login Example
 
-on: [push]
-
-name: AzureCLISample
+on:
+  push:
+    branches:
+      - main
 
 jobs:
-
-  build-and-deploy:
-    runs-on: self-hosted
+  build:
+    runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Azure Login
-      uses: azure/login@v2
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Install Azure CLI
+        run: |
+          curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 
-    - name: Azure CLI script
-      uses: azure/cli@v2
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az account show
-          az storage -h
+      - name: Add Azure CLI to PATH
+        run: echo "::add-path::/usr/bin"
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
