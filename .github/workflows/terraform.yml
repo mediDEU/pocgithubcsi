@@ -36,6 +36,14 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y unzip
 
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+    # When running on self-hosted GitHub Actions runners,
+    # NodeJS must be previously installed with the version specified in the action.yml.
+      - uses: actions/setup-node@v2
+        with:
+         node-version: '20'
     
       - name: Setup terraform
         uses: actions/setup-terraform@v3
